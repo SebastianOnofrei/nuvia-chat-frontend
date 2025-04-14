@@ -8,11 +8,12 @@ import Home from "./components/pages/Home/Home.jsx";
 function App() {
   return (
     <BrowserRouter>
+      {/* trebuie sa verific daca am un token activ.. trebuie sa vad ce sa intampla cu jwt acesta cand il dam. */}
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/chat" element={<Chat />} />
-        <Route path="/" element={<Home />} />
       </Routes>
     </BrowserRouter>
   );
