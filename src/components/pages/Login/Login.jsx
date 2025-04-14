@@ -1,13 +1,15 @@
+// Login.jsx
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import "./Login.css"; // Import any specific styles
+import { useNavigate } from "react-router-dom";
+import "./Login.css";
 import { setToken } from "../../../utils/tokenService";
+import { connectSocket } from "../../../utils/socket"; // 🔥 Import this
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,13 +22,12 @@ const Login = () => {
 
       console.log("Login successful:", response.data);
 
-      setToken(response.data.token);
+      setToken(response.data.token); // ✅ Store JWT
+      connectSocket(); // 🔥 Connect to socket after storing token
 
-      // Redirect to home page after successful login
-      navigate("/"); // Navigate to the home page
+      navigate("/"); // Redirect to home page
     } catch (error) {
       console.error("Login failed:", error.response?.data || error.message);
-      // Handle error - show an error message to the user
     }
   };
 

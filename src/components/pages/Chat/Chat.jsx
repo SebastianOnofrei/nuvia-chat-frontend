@@ -1,79 +1,81 @@
-// import React, { useState, useEffect } from "react";
-// import { io } from "socket.io-client";
+// src/components/ChatComponent.jsx
 
-// const Chat = () => {
-//   const [socket, setSocket] = useState(null);
-//   const [userId, setUserId] = useState("user1"); // User's unique identifier (e.g., username)
-//   const [message, setMessage] = useState("");
-//   const [privateMessage, setPrivateMessage] = useState("");
-//   const [recipientId, setRecipientId] = useState("user2");
-//   const [messages, setMessages] = useState([]);
+import React, { useEffect, useState } from "react";
+import { connectSocket, getSocket } from "../../../utils/socket.js";
+import { getToken } from "../../../utils/tokenService.js";
 
-//   useEffect(() => {
-//     // Connect to the backend server
-//     const socketInstance = io("http://localhost:3000");
-//     setSocket(socketInstance);
-//     console.log(socketInstance);
+const ChatComponent = ({ recipientId }) => {
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
 
-//     // Register user when connected
-//     socketInstance.emit("register", userId);
+  useEffect(() => {
+    // Connect to the socket when the component is mounted
+    connectSocket();
 
-//     // Listen for private messages
-//     socketInstance.on("private_message", (data) => {
-//       setMessages((prevMessages) => [
-//         ...prevMessages,
-//         { senderId: data.senderId, message: data.message },
-//       ]);
-//     });
+    const socket = getSocket();
 
-//     // Clean up on component unmount
-//     return () => {
-//       socketInstance.disconnect();
-//     };
-//   }, [userId]);
+    socket?.on("private_message", (data) => {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          senderId: data.senderId,
+          content: data.message,
+          timestamp: data.timestamp,
+        },
+      ]);
+    });
 
-//   // Handle sending a private message
-//   const sendPrivateMessage = () => {
-//     if (socket) {
-//       socket.emit("private_message", {
-//         senderId: userId,
-//         recipientId,
-//         message: privateMessage,
-//       });
-//       setPrivateMessage("");
-//     }
-//   };
+    // Clean up socket when component is unmounted
+    return () => {
+      if (socket) socket.disconnect();
+    };
+  }, []);
 
-//   return (
-//     <div>
-//       <h1>Chat App</h1>
+  const sendMessage = () => {
+    const socket = getSocket();
+    const token = getToken();
 
-//       <div>
-//         <h2>Send a Private Message</h2>
-//         <input
-//           type="text"
-//           placeholder="Recipient's ID"
-//           value={recipientId}
-//           onChange={(e) => setRecipientId(e.target.value)}
-//         />
-//         <textarea
-//           placeholder="Type your message..."
-//           value={privateMessage}
-//           onChange={(e) => setPrivateMessage(e.target.value)}
-//         />
-//         <button onClick={sendPrivateMessage}>Send Message</button>
-//       </div>
+    if (!message.trim()) return; // Don't send empty messages
 
-//       <div>
-//         <h2>Messages</h2>
-//         {messages.map((msg, index) => (
-//           <div key={index}>
-//             <strong>{msg.senderId}:</strong> {msg.message}
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
+    socket?.emit("private_message", {
+      senderId: token, // Use the user ID or token from JWT
+      recipientId,
+      message,
+    });
 
-// export default Chat;
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { senderId: "You", content: message, timestamp: Date.now() },
+    ]);
+
+    setMessage(""); // Clear the input after sending
+  };
+
+  return (
+    <div>
+      <div>
+        <h2>Chat with {recipientId}</h2>
+        <div className="messages">
+          {messages.map((msg, index) => (
+            <div key={index} className="message">
+              <p>
+                <strong>{msg.senderId}:</strong> {msg.content}
+              </p>
+              <small>{new Date(msg.timestamp).toLocaleTimeString()}</small>
+            </div>
+          ))}
+        </div>
+
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Type a message..."
+        />
+        <button onClick={sendMessage}>Send</button>
+      </div>
+    </div>
+  );
+};
+
+export default ChatComponent;

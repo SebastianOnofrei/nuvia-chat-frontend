@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./Home.css";
+import FriendsList from "../../organisms/FriendsList/FriendsList";
 
 const Home = () => {
   const navigate = useNavigate(); // Initialize useNavigate
@@ -24,6 +25,8 @@ const Home = () => {
           <button onClick={handleLoginClick}>Log In</button>
         </div>
       </div>
+
+      <FriendsList />
     </div>
   );
 };
