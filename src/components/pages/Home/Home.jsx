@@ -25,8 +25,6 @@ const Home = () => {
           <button onClick={handleLoginClick}>Log In</button>
         </div>
       </div>
-
-      <FriendsList />
     </div>
   );
 };

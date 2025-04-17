@@ -25,7 +25,7 @@ const Login = () => {
       setToken(response.data.token); // ✅ Store JWT
       connectSocket(); // 🔥 Connect to socket after storing token
 
-      navigate("/"); // Redirect to home page
+      navigate("/chat-list"); // Redirect to chat list
     } catch (error) {
       console.error("Login failed:", error.response?.data || error.message);
     }

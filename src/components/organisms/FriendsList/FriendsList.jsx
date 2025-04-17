@@ -14,6 +14,8 @@ const FriendsList = () => {
       const token = getToken();
       if (!token) return;
 
+      console.log("MY TOKENNNNNNNNN");
+      console.log(token);
       try {
         const response = await axios.get("http://localhost:3000/user/friends", {
           headers: {
@@ -43,7 +45,7 @@ const FriendsList = () => {
       <ul>
         {friends.map((friend) => (
           <li key={friend._id} onClick={() => openChat(friend._id)}>
-            {friend.name}
+            {friend.username}
           </li>
         ))}
       </ul>

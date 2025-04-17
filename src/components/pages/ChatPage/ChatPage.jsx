@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getToken } from "../../../utils/tokenService.js";
 import { connectSocket, getSocket } from "../../../utils/socket.js";
+import FriendsList from "../../organisms/FriendsList/FriendsList.jsx";
 
 const ChatPage = () => {
   const [friends, setFriends] = useState([]);
@@ -56,6 +57,8 @@ const ChatPage = () => {
           </div>
         ))}
       </div>
+
+      <FriendsList />
 
       {activeChat && (
         <div>

@@ -1,3 +1,5 @@
+// utils/socket.js
+
 import { io } from "socket.io-client";
 import { getToken } from "./tokenService.js";
 
@@ -5,11 +7,14 @@ let socket;
 
 export const connectSocket = (onMessageReceived) => {
   const token = getToken();
+  console.log("Token:", token); // Check if token is valid
+
   if (!token) {
     console.warn("No token found. Cannot connect to socket.");
     return;
   }
 
+  // If already connected, do nothing
   if (socket && socket.connected) return;
 
   socket = io("http://localhost:3000", {
