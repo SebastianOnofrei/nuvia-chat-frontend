@@ -5,15 +5,21 @@ import { connectSocket, getSocket } from "../../../utils/socket.js";
 import { getToken } from "../../../utils/tokenService.js";
 import { jwtDecode } from "jwt-decode"; // Import the jwt-decode library
 import { useParams } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import "./Chat.css";
 
 const Chat = () => {
   const { recipientId } = useParams(); // ✅ magic happens here
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-
+  const [recipient, setRecipient] = useState({});
+  const navigate = useNavigate();
   useEffect(() => {
     // Connect to the socket when the component is mounted
+    getRecipientProfile();
+
     connectSocket((msg) => {
       setMessages((prevMessages) => [
         ...prevMessages,
@@ -73,36 +79,69 @@ const Chat = () => {
       sendMessage(); // Trigger message send
     }
   };
+
+  const getRecipientProfile = async () => {
+    // /user/:recipiendId. asta trebe
+    const token = getToken();
+    const response = await axios.get(
+      `http://localhost:3000/user/${recipientId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log(response);
+    setRecipient(response.data);
+  };
+
+  const handleGoBack = () => {
+    navigate("/chat-list");
+  };
+
   return (
     <div className="chat-container">
+      <button onClick={handleGoBack}>BACK TO CHATLIST</button>
+
       <div>
-        <h2>Chat with {recipientId}</h2>
+        <h2>Chat with {recipient.username}</h2>
         <div className="chat-box">
           <div className="messages">
             {messages.map((msg, index) => (
-              <div
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8 }}
                 key={index}
                 className={`message ${
                   msg.senderId === "You" ? "sent" : "received"
                 }`}
               >
                 <p>
-                  <strong>{msg.senderId}:</strong> {msg.content}
+                  <strong>
+                    {msg.senderId !== "You" ? recipient.username : msg.senderId}
+                    :
+                  </strong>{" "}
+                  {msg.content}
                 </p>
                 <small>{new Date(msg.timestamp).toLocaleTimeString()}</small>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </div>
       <input
         type="text"
+        className="message-input"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Type a message..."
       />
-      <button onClick={sendMessage}>Send</button>
+      <button onClick={sendMessage} className="send-btn">
+        Send
+      </button>
     </div>
   );
 };

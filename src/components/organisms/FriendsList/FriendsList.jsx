@@ -33,7 +33,7 @@ const FriendsList = () => {
     };
 
     fetchFriends();
-  }, [friends]);
+  }, []);
 
   const openChat = (friendId) => {
     navigate(`/chat/${friendId}`);

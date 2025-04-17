@@ -62,7 +62,7 @@
   text-align: left;
 }
 
-input {
+.message-input {
   width: 100%;
   max-width: 800px;
   padding: 0.9rem 1.2rem;
@@ -79,11 +79,11 @@ input {
   transition: border-color 0.3s;
 }
 
-input:focus {
+.message-input:focus {
   border-color: #d1b26f;
 }
 
-button {
+.send-btn {
   width: 20%;
   padding: 12px;
   background: linear-gradient(to right, #e8c36a, #bfa64b);
@@ -102,6 +102,6 @@ button {
   box-shadow: 0 4px 10px rgba(183, 145, 63, 0.3);
 }
 
-button:hover {
+.send-btn:hover {
   background: linear-gradient(to right, #ffdb88, #caa64a);
 }
