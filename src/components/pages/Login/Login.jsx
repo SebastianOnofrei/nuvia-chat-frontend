@@ -31,6 +31,10 @@ const Login = () => {
     }
   };
 
+  const handleSignup = () => {
+    navigate("/signup");
+  };
+
   return (
     <div className="login-container">
       <div className="login-box">
@@ -53,6 +57,10 @@ const Login = () => {
           />
 
           <button type="submit">Login</button>
+          <small>or</small>
+          <button className="signup-btn" onClick={handleSignup}>
+            Signup
+          </button>
         </form>
       </div>
     </div>

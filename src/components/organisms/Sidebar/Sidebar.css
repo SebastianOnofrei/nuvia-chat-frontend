@@ -1,0 +1,32 @@
+aside {
+  background: linear-gradient(to bottom, #fffdf7, #fdf7ee);
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  padding: 1rem;
+
+  button {
+    background: linear-gradient(to bottom, #ecd692, #f5d4a3);
+  }
+  .actions-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100%;
+  }
+
+  .space {
+    flex-grow: 1;
+  }
+
+  .user-details {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .user-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+    }
+  }
+}

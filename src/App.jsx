@@ -4,8 +4,10 @@ import { getToken } from "./utils/tokenService.js"; // Utility to get the JWT to
 import Home from "./components/pages/Home/Home.jsx";
 import SignUp from "./components/pages/SignUp/SignUp.jsx";
 import Login from "./components/pages/Login/Login.jsx";
-import Chat from "./components/pages/Chat/Chat.jsx";
+
 import ChatPage from "./components/pages/ChatPage/ChatPage.jsx";
+import UserProfile from "./components/pages/UserProfile/UserProfile.jsx";
+import AddFriendForm from "./components/organisms/AddFriendsForm/AddFriendForm.jsx";
 
 // Private Route Wrapper to protect routes that require authentication
 const PrivateRoute = ({ element }) => {
@@ -22,19 +24,21 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* Public routes */}
-        <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-
+        <Route path="/login" element={<Login />} />
         {/* Private routes */}
         <Route path="/" element={<PrivateRoute element={<Home />} />} />
         <Route
           path="/chat-list"
           element={<PrivateRoute element={<ChatPage />} />}
         />
-
         <Route
-          path="/chat/:recipientId"
-          element={<PrivateRoute element={<Chat />} />}
+          path="/add-friend"
+          element={<PrivateRoute element={<AddFriendForm />} />}
+        />
+        <Route
+          path="/user-profile"
+          element={<PrivateRoute element={<UserProfile />} />}
         />
       </Routes>
     </BrowserRouter>

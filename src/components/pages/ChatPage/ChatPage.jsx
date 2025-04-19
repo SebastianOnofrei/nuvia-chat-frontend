@@ -1,15 +1,28 @@
 // src/components/ChatPage.jsx
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { getToken } from "../../../utils/tokenService.js";
-import { connectSocket, getSocket } from "../../../utils/socket.js";
-import FriendsList from "../../organisms/FriendsList/FriendsList.jsx";
+import ChatList from "../../organisms/ChatList/ChatList.jsx";
+import "./ChatPage.css";
+import Sidebar from "../../organisms/Sidebar/Sidebar.jsx";
+import Chat from "../../organisms/Chat/Chat.jsx";
 
 const ChatPage = () => {
+  // functie care seteaza chatul activ.
+  const [activeChatId, setActiveChatId] = useState("");
+
+  useEffect(() => {
+    console.log("============ SA SCHIMBAT ACTIVE CHAT ID? ");
+    console.log(activeChatId);
+  }, [activeChatId]);
+
   return (
-    <div>
-      <h2>Friends</h2>
-      <FriendsList />
+    <div className="chat-list-container">
+      <Sidebar />
+      <ChatList setActiveChatId={setActiveChatId} />
+
+      <Chat
+        className="chat-list-container__active-chat"
+        activeChatRecipientId={activeChatId}
+      />
     </div>
   );
 };

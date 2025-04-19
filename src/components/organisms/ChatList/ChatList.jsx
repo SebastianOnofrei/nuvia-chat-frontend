@@ -4,8 +4,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getToken } from "../../../utils/tokenService.js";
+import "./ChatList.css";
 
-const FriendsList = () => {
+const ChatList = ({ setActiveChatId }) => {
   const [friends, setFriends] = useState([]);
   const navigate = useNavigate();
 
@@ -22,11 +23,8 @@ const FriendsList = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-
         setFriends(response.data);
-        console.log("============================= FRIENDS? ");
-        console.log(friends);
-        console.log(response.data);
+        setActiveChatId(response.data[0]._id);
       } catch (error) {
         console.error("Error fetching friends:", error);
       }
@@ -36,15 +34,19 @@ const FriendsList = () => {
   }, []);
 
   const openChat = (friendId) => {
-    navigate(`/chat/${friendId}`);
+    setActiveChatId(friendId);
   };
 
   return (
-    <div>
-      <h2>Your Friends</h2>
+    <div className="chat-list">
+      <h2>Conversations</h2>
       <ul>
         {friends.map((friend) => (
-          <li key={friend._id} onClick={() => openChat(friend._id)}>
+          <li
+            key={friend._id}
+            onClick={() => openChat(friend._id)}
+            className="chat-list__item"
+          >
             {friend.username}
           </li>
         ))}
@@ -53,4 +55,4 @@ const FriendsList = () => {
   );
 };
 
-export default FriendsList;
+export default ChatList;

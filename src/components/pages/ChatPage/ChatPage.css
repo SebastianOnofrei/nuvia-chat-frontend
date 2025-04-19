@@ -1,0 +1,13 @@
+.chat-list-container {
+  display: flex;
+  margin: 2rem 4rem;
+  height: calc(100vh - 64px);
+}
+
+.chat-list-container__active-chat {
+  flex-grow: 2;
+  /* background-color: rgb(34, 46, 53); */
+  background: linear-gradient(to bottom, #fffdf7, #fdf7ee);
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}

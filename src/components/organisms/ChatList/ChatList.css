@@ -1,0 +1,26 @@
+.chat-list {
+  background: linear-gradient(to top, #e4deca, #f3ece2);
+
+  flex-grow: 1;
+  border-right: 1px solid rgb(197, 197, 197);
+  padding: 2rem 1rem;
+
+  h2 {
+    color: #313131;
+    font-weight: 400;
+    padding-bottom: 1rem;
+  }
+
+  ul {
+    li {
+      color: #4e4e4e;
+    }
+  }
+
+  .chat-list__item {
+    padding: 1rem 0;
+    border: 1px solid #ffffff;
+    border-right: none;
+    border-left: none;
+  }
+}
