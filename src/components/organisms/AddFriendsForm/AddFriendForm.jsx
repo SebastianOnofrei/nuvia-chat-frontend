@@ -1,21 +1,36 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { getToken } from "../../../utils/tokenService";
+import "./AddFriendForm.css"; // import the CSS
 
 function AddFriendForm() {
   const [input, setInput] = useState("");
   const [message, setMessage] = useState("");
+  const [error, setError] = useState(false);
   const token = getToken();
+
+  const isValidEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!input) return setMessage("Please enter an email or phone number.");
+    if (!input) {
+      setError(true);
+      return setMessage("Please enter an email.");
+    }
+
+    if (!isValidEmail(input)) {
+      setError(true);
+      return setMessage("Please enter a valid email address.");
+    }
 
     try {
       const res = await axios.post(
         "http://localhost:3000/friendship/add",
-        { identifier: input },
+        { friendEmail: input },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -25,30 +40,39 @@ function AddFriendForm() {
 
       setMessage(res.data.message || "Friend added!");
       setInput("");
+      setError(false);
     } catch (err) {
       console.error("Add friend error:", err);
       const errorMsg =
         err.response?.data?.error || "Could not add friend. Try again.";
       setMessage(errorMsg);
+      setError(true);
     }
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: "0 auto", padding: 20 }}>
-      <h2>Add a Friend</h2>
+    <div className="form-container">
+      <h2 className="form-title">Add a Friend</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Enter email or phone number"
+          className={`form-input ${error ? "input-error" : ""}`}
+          placeholder="Enter friend's email"
           value={input}
-          onChange={(e) => setInput(e.target.value)}
-          style={{ width: "100%", padding: 10, marginBottom: 10 }}
+          onChange={(e) => {
+            setInput(e.target.value);
+            setError(false);
+          }}
         />
-        <button type="submit" style={{ padding: 10, width: "100%" }}>
+        <button type="submit" className="form-button">
           Add Friend
         </button>
       </form>
-      {message && <p style={{ marginTop: 10 }}>{message}</p>}
+      {message && (
+        <p className={`form-message ${error ? "error" : "success"}`}>
+          {message}
+        </p>
+      )}
     </div>
   );
 }

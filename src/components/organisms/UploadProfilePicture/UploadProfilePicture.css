@@ -19,11 +19,16 @@ body {
   color: #fff7c0;
 }
 
-.form-input {
+.form-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.file-input {
   width: 100%;
   padding: 12px;
-  margin-bottom: 12px;
-  border: none;
+  margin-bottom: 20px;
   border-radius: 4px;
   background-color: #fff;
   color: #333;
