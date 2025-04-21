@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Sidebar.css";
 import { useNavigate } from "react-router-dom";
-import { getToken } from "../../../utils/tokenService";
+import { clearToken, getToken } from "../../../utils/tokenService";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
@@ -36,12 +36,17 @@ const Sidebar = () => {
   const handleAddFriend = () => {
     navigate("/add-friend");
   };
+  const handleLogout = () => {
+    clearToken();
+    navigate("/login");
+  };
 
   return (
     <aside>
       <div className="actions-container">
         <button onClick={handleAddFriend}>Add contact</button>
         <button onClick={handleOnSettings}>Settings</button>
+        <button onClick={handleLogout}>Logout</button>
         <div className="space"></div>
         <div className="user-details">
           <img src={user.profilePicture} alt="avatar" className="user-avatar" />

@@ -22,5 +22,14 @@
     border: 1px solid #ffffff;
     border-right: none;
     border-left: none;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .chat-list__item-details {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
   }
 }

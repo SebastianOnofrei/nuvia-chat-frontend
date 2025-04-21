@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { getToken } from "../../../utils/tokenService";
 import "./AddFriendForm.css"; // import the CSS
+import { useNavigate } from "react-router-dom";
 
 function AddFriendForm() {
   const [input, setInput] = useState("");
@@ -50,8 +51,15 @@ function AddFriendForm() {
     }
   };
 
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate("/chat-list");
+  };
+
   return (
     <div className="form-container">
+      <button onClick={handleGoBack}>Go back</button>
       <h2 className="form-title">Add a Friend</h2>
       <form onSubmit={handleSubmit}>
         <input

@@ -22,11 +22,5 @@ aside {
     display: flex;
     align-items: center;
     gap: 1rem;
-
-    .user-avatar {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-    }
   }
 }

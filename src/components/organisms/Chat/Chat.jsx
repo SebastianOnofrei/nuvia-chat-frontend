@@ -9,6 +9,7 @@ import "./Chat.css";
 
 const Chat = ({ activeChatRecipientId }) => {
   const [recipientId, setRecipientId] = useState("");
+  const [onlinePresenceIndicator, setOnlinePresenceIndicator] = useState(false);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [recipient, setRecipient] = useState({});
@@ -112,10 +113,7 @@ const Chat = ({ activeChatRecipientId }) => {
                   msg.senderId === "You" ? "sent" : "received"
                 }`}
               >
-                <p>
-                  {/* {msg.senderId !== "You" ? recipient.username : msg.senderId}: */}
-                  {msg.content}
-                </p>
+                <p>{msg.content}</p>
                 <small>
                   {new Date(msg.timestamp).toLocaleTimeString([], {
                     hour: "2-digit",
