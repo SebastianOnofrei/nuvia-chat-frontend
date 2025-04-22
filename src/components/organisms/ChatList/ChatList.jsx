@@ -8,7 +8,7 @@ import { jwtDecode } from "jwt-decode";
 import { calculateTime } from "../../../utils/timeCalculation.js";
 import "./ChatList.css";
 
-const ChatList = ({ setActiveChatId }) => {
+const ChatList = ({ setActiveChatId, setConversationId }) => {
   const [friends, setFriends] = useState([]);
   const token = getToken();
   const decodedToken = jwtDecode(token);
@@ -43,6 +43,7 @@ const ChatList = ({ setActiveChatId }) => {
               return {
                 ...friend,
                 lastMessage: res.data.lastMessage || {}, // fallback if no message
+                conversationId: res.data._id,
               };
             } catch (error) {
               console.error(
@@ -70,8 +71,9 @@ const ChatList = ({ setActiveChatId }) => {
     fetchFriends();
   }, []);
 
-  const openChat = (friendId) => {
+  const openChat = (friendId, conversationId) => {
     setActiveChatId(friendId);
+    setConversationId(conversationId);
   };
 
   console.log(friends);
@@ -84,7 +86,7 @@ const ChatList = ({ setActiveChatId }) => {
         {friends.map((friend) => (
           <li
             key={friend._id}
-            onClick={() => openChat(friend._id)}
+            onClick={() => openChat(friend._id, friend.conversationId)}
             className="chat-list__item"
           >
             <img
